@@ -1,5 +1,7 @@
 # NRGN Translator
 
+![Screenshot_2](https://github.com/nrgncorp/React-Google-Translator-App/assets/106927887/c831fb05-13d1-49fd-aa64-d3ef0d51baea)
+
 NRGN Translator, kullanıcıların metinleri farklı diller arasında çevirmelerine olanak tanıyan basit bir çeviri uygulamasıdır.
 
 ## Özellikler
@@ -40,5 +42,5 @@ NRGN Translator, kullanıcıların metinleri farklı diller arasında çevirmele
 2. Yeni özellikler ekleyin veya hataları düzeltin.
 3. Yaptığınız değişiklikleri yeni bir dalda (branch) yayınlayın: `git push origin feature/feature-name`
 4. Bir Pull Request oluşturun.
-![Screenshot_2](https://github.com/nrgncorp/React-Google-Translator-App/assets/106927887/c831fb05-13d1-49fd-aa64-d3ef0d51baea)
+
 
