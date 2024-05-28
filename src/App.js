@@ -2,82 +2,146 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faThumbsUp, faEye} from '@fortawesome/free-solid-svg-icons';
-import $ from 'jquery';git 
+import $ from 'jquery';
 
 function App() {
-  const [comments, setComments] = useState([]);
-  const [video, setVideo] = useState({});
+  const [text, setText] = useState('');
+  const [leng1, setLeng1] = useState('none');
+  const [leng2, setLeng2] = useState('none');
 
-  useEffect(() => {
-    const settings1 = {
-      async: true,
-      crossDomain: true,
-      url: 'https://youtube-media-downloader.p.rapidapi.com/v2/video/comments?videoId=c1EgEFWDMGo&sortBy=top',
-      method: 'GET',
-      headers: {
-        'x-rapidapi-key': '<your-token>',
-        'x-rapidapi-host': 'youtube-media-downloader.p.rapidapi.com'
+  const handleTranslate = () => {
+    translator(text, leng1, leng2);
+  };
+
+  function translator(text, leng1, leng2){
+    if(text != null && leng1 != leng2){
+      if (text !== null && leng1 !== leng2) {
+        $('#alert').attr('class','alert alert-warning mt-4 display-none');
+        const settings = {
+          async: true,
+          crossDomain: true,
+          url: 'https://google-translator9.p.rapidapi.com/v2',
+          method: 'POST',
+          headers: {
+            'x-rapidapi-key': '<your-token>',
+            'x-rapidapi-host': 'google-translator9.p.rapidapi.com',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            q: text,
+            source: leng1,
+            target: leng2,
+            format: 'text'
+          })
+        };
+      
+        fetch(settings.url, {
+          method: settings.method,
+          headers: settings.headers,
+          body: settings.body
+        })
+          .then(response => response.json())
+          .then(data => {
+            $('#textresult').text(data.data.translations[0].translatedText);
+          })
+          .catch(error => console.error('Error:', error));
+      }      
+    }
+    else{
+      if(text == "" && leng1 == leng2){
+        $('#alert').attr('class','alert alert-warning mt-4');
+        $('#alert').text("Metin girmeniz gerekmektedir. | Girilen dil ile çevirilecek dil aynı olamaz ve dil seçimleri boş geçilemez.");
+        $('#textresult').text("");
       }
-    };
-
-    const settings2 = {
-      async: true,
-      crossDomain: true,
-      url: 'https://youtube-media-downloader.p.rapidapi.com/v2/video/details?videoId=c1EgEFWDMGo',
-      method: 'GET',
-      headers: {
-        'x-rapidapi-key': '<your-token>',
-        'x-rapidapi-host': 'youtube-media-downloader.p.rapidapi.com'
+      else if(text == null && leng1 != leng2){
+        $('#alert').attr('class','alert alert-warning mt-4');
+        $('#alert').text("Metin girmeniz gerekmektedir.");
+        $('#textresult').text("");
       }
-    };
-    
-    $.ajax(settings1).done(function (response) {
-      setComments(response.items);
-      console.log(response);
-    });
-
-    $.ajax(settings2).done(function (response) {
-      setVideo(response);
-      console.log(response);
-    });
-  }, []);
+      else if(text != "" && leng1 == leng2){
+        $('#alert').attr('class','alert alert-warning mt-4');
+        $('#alert').text("Girilen dil ile çevirilecek dil aynı olamaz ve dil seçimleri boş geçilemez.");
+        $('#textresult').text("");
+      }
+    }
+  }
 
   return (
     <div className="App">
       <div className="card">
-        {video.thumbnails && video.thumbnails.length >= 5 && (
-          <img src={video.thumbnails[4].url} className="card-img-top" alt="..." />
-        )}
         <div className="card-body">
-          {video.channel && video.channel.name && (
-            <p className="card-text">{video.channel.name}</p>
-          )}
-          <h5 className="card-title">{video.title}</h5>
-          <div className='video-rates'>
-            <h5 className="card-title">{video.viewCount}<FontAwesomeIcon className="icons" icon={faEye}/></h5>
-            <h5 className="card-title">{video.likeCount}<FontAwesomeIcon className="icons" icon={faThumbsUp}/></h5>
-          </div>
-          <a href={`https://www.youtube.com/watch?v=${video.id}`} target='_blank' className="btn btn-primary">İzle</a>
+          NRGN Translator
         </div>
       </div>
-      <div className="list-group">
-        {comments.map((comment) => (
-          <a href="#" key={comment.id} className="list-group-item list-group-item-action" aria-current="true">
-            <div className="d-flex w-100 justify-content-between">
-              <h5 className="mb-1">{comment.channel.name}</h5>
-              <small>{comment.publishedTimeText}</small>
-            </div>
-            <p className="mb-1">{comment.contentText}</p>
-            {comment.voteCountText > 0 && (
-              <small className='comment-rate'>
-                {comment.voteCountText}
-                <FontAwesomeIcon className="icons" icon={faThumbsUp}/>
-              </small>
-            )}
-          </a>
-        ))}
+      <div id='alert' class="alert alert-warning mt-4 display-none" role="alert">
+      </div>
+      <div className="row g-3 mt-2">
+        <div className="col-sm">
+          <textarea className="form-control" id='text' placeholder="Metin giriniz..." value={text}
+            onChange={(e) => setText(e.target.value)}></textarea>
+        </div>
+      </div>
+      <div className="row g-3 mt-2">
+        <div className="col-sm">
+          <select id='text-leng1' className="form-select" aria-label="Default select example" value={leng1}
+            onChange={(e) => setLeng1(e.target.value)}>
+            <option selected value="none">Girilen Dil</option>
+            <option value="en-US">English</option>
+            <option value="zh-CN">Chinese (Simplified)</option>
+            <option value="hi-IN">Hindi</option>
+            <option value="es-ES">Spanish</option>
+            <option value="fr-FR">French</option>
+            <option value="ar-SA">Arabic</option>
+            <option value="bn-IN">Bengali</option>
+            <option value="ru-RU">Russian</option>
+            <option value="pt-BR">Portuguese</option>
+            <option value="id-ID">Indonesian</option>
+            <option value="ur-PK">Urdu</option>
+            <option value="de-DE">German</option>
+            <option value="ja-JP">Japanese</option>
+            <option value="sw-KE">Swahili</option>
+            <option value="mr-IN">Marathi</option>
+            <option value="te-IN">Telugu</option>
+            <option value="ta-IN">Tamil</option>
+            <option value="tr-TR">Turkish</option>
+            <option value="ko-KR">Korean</option>
+            <option value="vi-VN">Vietnamese</option>
+          </select>
+        </div>
+        <div className="col-sm">
+          <select id='text-leng2' className="form-select" aria-label="Default select example" value={leng2}
+            onChange={(e) => setLeng2(e.target.value)}>
+            <option selected value="none">Çevirilecek Dil</option>
+            <option value="en-US">English</option>
+            <option value="zh-CN">Chinese (Simplified)</option>
+            <option value="hi-IN">Hindi</option>
+            <option value="es-ES">Spanish</option>
+            <option value="fr-FR">French</option>
+            <option value="ar-SA">Arabic</option>
+            <option value="bn-IN">Bengali</option>
+            <option value="ru-RU">Russian</option>
+            <option value="pt-BR">Portuguese</option>
+            <option value="id-ID">Indonesian</option>
+            <option value="ur-PK">Urdu</option>
+            <option value="de-DE">German</option>
+            <option value="ja-JP">Japanese</option>
+            <option value="sw-KE">Swahili</option>
+            <option value="mr-IN">Marathi</option>
+            <option value="te-IN">Telugu</option>
+            <option value="ta-IN">Tamil</option>
+            <option value="tr-TR">Turkish</option>
+            <option value="ko-KR">Korean</option>
+            <option value="vi-VN">Vietnamese</option>
+          </select>
+        </div>
+        <div className="col-sm d-grid">
+            <button type="button" onClick={handleTranslate} className="btn btn-primary">Çevir</button>
+        </div>
+      </div>
+      <div className="row g-3 mt-2">
+        <div className="col-sm">
+          <textarea className="form-control" id='textresult' placeholder=""></textarea>
+        </div>
       </div>
     </div>
   );

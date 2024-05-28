@@ -1,25 +1,31 @@
 .App {
   text-align: left;
-  padding: 50px 30%;
+  padding: 50px 20%;
   background-color: black;
+  height: 100vh;
 }
 
-.comment-rate{
-  display: flex;
-  justify-content: end;
+.card-body{
+  background: radial-gradient(circle, rgba(25,42,89,1) 0%, rgba(0,71,156,1) 100%);
+  justify-content: center;
   align-items: center;
-}
-
-.icons{
-  margin-left: 5px;
-}
-
-.list-group{
-  margin-top: 20px;
-}
-
-.video-rates{
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  height: 200px;
+  font-size: 2rem;
+  color: white !important;
+  font-weight: 600;
+}
+
+.card{
+  border: none !important;
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+.alert-warning{
+  background-color: rgb(236, 179, 71) !important;
+}
+
+.display-none{
+  display: none !important;
 }
