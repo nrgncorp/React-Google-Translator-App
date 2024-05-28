@@ -42,5 +42,3 @@ NRGN Translator, kullanıcıların metinleri farklı diller arasında çevirmele
 2. Yeni özellikler ekleyin veya hataları düzeltin.
 3. Yaptığınız değişiklikleri yeni bir dalda (branch) yayınlayın: `git push origin feature/feature-name`
 4. Bir Pull Request oluşturun.
-
-
