@@ -21,3 +21,4 @@ React Youtube Media Viewer, YouTube videolarını görüntülemek ve ilgili yoru
 ## Lisans
 
 Bu proje MIT lisansı altında lisanslanmıştır. Daha fazla bilgi için [LICENSE](LICENSE) dosyasına göz atın.
+# React-Google-Translator-App
